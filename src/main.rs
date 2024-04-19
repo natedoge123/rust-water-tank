@@ -18,18 +18,33 @@ impl CylinderTank {
     fn volume(&self) -> f32 {
         let area = PI * ((self.diameter * self.diameter) / 4.0);
         let volume = area * self.height;
-        volume
+        return volume;
     }
 
     fn fill_volume(&self) -> f32 {
         let area = PI * ((self.diameter * self.diameter) / 4.0);
         let volume = area * self.level;
-        volume
+        return volume;
+    }
+
+    fn fill_perc(&self) -> f32 {
+        let total = self.volume();
+        let filled = self.fill_volume();
+        let percentage = (filled / total) * 100.0;
+        return percentage;
+    }
+
+    fn vol_delta(&mut self, vol_adjust: f32) -> f32 {
+        let area = PI * ((self.diameter * self.diameter) / 4.0);
+        let filled = self.fill_volume() + vol_adjust;
+        self.level = filled / area;
+        return self.level;
     }
 }
 
 fn main() {
-    let tank = CylinderTank::new_tank(10.0, 2.0, 1.0);
-
-    println!("The volume of the tank is {}", tank.fill_volume());
+    let mut tank = CylinderTank::new_tank(10.0, 2.0, 0.0);
+    println!("Volume {}", tank.fill_volume());
+    tank.vol_delta(1.0);
+    println!("Volume {}", tank.fill_volume());
 }
