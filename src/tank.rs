@@ -5,7 +5,7 @@ use std::f32::consts::PI;
 pub struct CylinderTank {
     height: f32,
     diameter: f32,
-    level: f32,
+    pub level: f32,
     volume: f32,
     area: f32,
 }

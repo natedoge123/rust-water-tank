@@ -1,36 +1,48 @@
+use std::time::{Duration, Instant};
+
 pub struct PIDCtrl {
-    set_point: f32,
-    process_var: f32,
-    p: f32,
-    i: f32,
-    d: f32,
+    pub set_point: f32,
+    pub process_var: f32,
+    pub control_var: f32,
+    pub p: f32,
+    pub i: f32,
+    pub d: f32,
     error: f32,
     error_total: f32,
-    delta_t: f32,
-    
+    error_prev: f32,
+    pub last_time: Instant,
 }
 
 impl PIDCtrl {
     pub fn new_ctrl(p: f32, i: f32, d: f32) -> PIDCtrl {
-        let set_point = 0.0;
-        let process_var = 0.0;
-        let error = 0.0;
-        let error_total = 0.0;
-        let delta_t = 0.0;
         PIDCtrl {
-            set_point,
-            process_var,
+            set_point: 0.0,
+            process_var: 0.0,
+            control_var: 0.0,
             p,
             i,
             d,
-            error,
-            error_total,
-            delta_t,
+            error: 0.0,
+            error_total: 0.0,
+            error_prev: 0.0,
+            last_time: Instant::now(),
         }
     }
 
-    pub fn update(&self) {
-        self.error = 
+    pub fn update(&mut self) {
+        self.error = self.set_point - self.process_var;
+        let now = Instant::now();
+        let dt = now.duration_since(self.last_time).as_secs_f32();
+        self.error_total += self.error;
+        let error_rate = self.error;
 
+        let pro = self.p * self.error;
+        let int = (self.i * self.error_total) * dt;
+        let div = (self.d * error_rate) / dt;
+
+        self.control_var = pro + int + div;
+
+        self.error_prev = self.error;
+        self.last_time = now;
     }
 }
