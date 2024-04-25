@@ -8,12 +8,12 @@ use crate::pid::PIDCtrl;
 fn main() {
     let flow_in = 10.0;
     let mut flow_out = 0.0;
-    let mut tank_1 = tank::CylinderTank::new_tank(10.0, 2.0);
+    let mut tank_1 = tank::CylinderTank::new_tank(1000.0, 2.0);
     let mut pid_1 = pid::PIDCtrl::new_ctrl(0.5, 0.01, 0.0);
     tank_1.print_tank();
 
     //  Declare all of the PID variables and tie them to the tank
-    pid_1.set_point = 50.0;
+    pid_1.set_point = 500.0;
 
     loop {
         // Update PID varibles per cycle

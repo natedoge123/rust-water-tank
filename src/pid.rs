@@ -33,12 +33,13 @@ impl PIDCtrl {
         self.error = self.set_point - self.process_var;
         let now = Instant::now();
         let dt = now.duration_since(self.last_time).as_secs_f32();
-        self.error_total += self.error;
-        let error_rate = self.error;
+
+        self.error_total += self.error * dt;
+        let derivative = (self.error - self.error_prev) / dt;
 
         let pro = self.p * self.error;
-        let int = (self.i * self.error_total) * dt;
-        let div = (self.d * error_rate) / dt;
+        let int = self.i * self.error_total;
+        let div = self.d * derivative;
 
         self.control_var = pro + int + div;
 
