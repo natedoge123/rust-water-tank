@@ -45,4 +45,9 @@ impl CylinderTank {
         println!("Filled Volume: {}", self.fill_volume());
         println!("Filled Percent: {}", self.fill_percent());
     }
+
+    pub fn diameter_update(&mut self, new_diameter: f32) {
+        self.diameter = new_diameter;
+        println!("Diameter updated to {}", self.diameter);
+    }
 }

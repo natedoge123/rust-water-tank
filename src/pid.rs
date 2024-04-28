@@ -1,4 +1,4 @@
-use std::time::{Duration, Instant};
+use std::time::Instant;
 
 pub struct PIDCtrl {
     pub set_point: f32,
